@@ -3,7 +3,7 @@ import {pool} from "../config/db";
 
 // Hàm tạo phiếu nhập
 export const createReceipt = async (req: Request, res: Response) => {
-  // Lấy 1 connection từ pool (PostgreSQL)
+  // Lấy 1 connection từ pool (PostgreSQL) Backend lấy một kết nối tới PostgreSQL để bắt đầu ghi dữ liệu.
   const client = await pool.connect();
 
   try {
@@ -83,7 +83,7 @@ export const createReceipt = async (req: Request, res: Response) => {
     // Trả lỗi về client
     res.status(500).json({error: "Lỗi server"});
   } finally {
-    // Luôn giải phóng connection (tránh bị đầy pool)
+    // Dù thành công hay thất bại, backend đều phải trả connection về pool để tránh nghẽn kết nối.
     client.release();
   }
 };
